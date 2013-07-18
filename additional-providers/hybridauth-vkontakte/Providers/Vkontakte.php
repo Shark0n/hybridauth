@@ -102,13 +102,21 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			}
 		}
 
-		if( property_exists($response,'bdate') ){
-			list($birthday_day, $birthday_month, $birthday_year) = explode( '.', $response->bdate );
-
-			$this->user->profile->birthDay   = (int) $birthday_day;
-			$this->user->profile->birthMonth = (int) $birthday_month;
-			$this->user->profile->birthYear  = (int) $birthday_year;
-		}
+		if (property_exists($response, 'bdate')) {
+	            /**
+	             * @var string $response->bdate returns User's birthday DD.MM.YYYY or DD.MM, 
+	             * and returns empty string "", if user hided his birthday.
+	             * @link http://vk.com/dev/fields User Object description and methods
+	             */
+	            $this->user->profile->birthDay= $response->bdate;
+	            $bDate = array();
+	            $bDate = explode('.', $response->bdate);
+	            $this->user->profile->birthDay = (int) $bDate[0];
+	            $this->user->profile->birthMonth = (int) $bDate[1];
+	            if (sizeof($bDate) > 2) {
+	                $this->user->profile->birthMonth = (int) $bDate[2];
+	            }
+	        }
 
 		return $this->user->profile;
 	}
