@@ -108,7 +108,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 	             * and returns empty string "", if user hided his birthday.
 	             * @link http://vk.com/dev/fields User Object description and methods
 	             */
-	            $this->user->profile->birthDay= $response->bdate;
+	            $this->user->profile->birthDay = $response->bdate;
 	            $bDate = array();
 	            $bDate = explode('.', $response->bdate);
 	            $this->user->profile->birthDay = (int) $bDate[0];
